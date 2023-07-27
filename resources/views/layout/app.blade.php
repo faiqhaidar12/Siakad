@@ -57,31 +57,31 @@
 
                 <!-- Messages Dropdown Menu -->
                 <li class="nav-item dropdown user-menu">
-                    {{-- @if (Auth::check()) --}}
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ url('AdminLTE') }}/dist/img/user2-160x160.jpg"
-                            class="user-image img-circle elevation-2" alt="User Image">
-                        <span class="d-none d-md-inline">Admin</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <!-- User image -->
-                        <li class="user-header bg-primary">
-                            <img src="{{ url('AdminLTE') }}/dist/img/user2-160x160.jpg" class="img-circle elevation-2"
-                                alt="User Image">
-                            <p>
-                                Admin
-                                <small>Member since Nov. 2012</small>
-                            </p>
-                        </li>
-                        <!-- Menu Body -->
-                        <li class="user-body">
-                        </li>
-                        <!-- Menu Footer-->
-                        <li class="user-footer">
-                            <a href="#" class="btn btn-default btn-flat">Profile</a>
-                            <a href="/sesi/logout" class="btn btn-default btn-flat float-right">Sign out</a>
-                        </li>
-                        {{-- @endif --}}
+                    @if (Auth::check())
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                            <img src="{{ url('AdminLTE') }}/dist/img/user2-160x160.jpg"
+                                class="user-image img-circle elevation-2" alt="User Image">
+                            <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            <!-- User image -->
+                            <li class="user-header bg-primary">
+                                <img src="{{ url('AdminLTE') }}/dist/img/user2-160x160.jpg"
+                                    class="img-circle elevation-2" alt="User Image">
+                                <p>
+                                    {{ Auth::user()->name }}
+                                    <small>Member since Nov. 2012</small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <a href="/sesi/logout" class="btn btn-default btn-flat float-right">Sign out</a>
+                            </li>
+                    @endif
                 </li>
             </ul>
             </li>
@@ -126,56 +126,68 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
+                        @if (Auth::user()->role == 'Admin')
+                            <li class="nav-item">
+                                <a href="{{ url('/') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        Dashboard
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('/kelas') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-square"></i>
+                                    <p>
+                                        Kelas
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('/mapel') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-book-reader"></i>
+                                    <p>
+                                        Mata Pelajaran
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('/siswa') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-user"></i>
+                                    <p>
+                                        Siswa
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('/guru') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-chess-king"></i>
+                                    <p>
+                                        Guru
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('/nilai') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-book-open"></i>
+                                    <p>
+                                        Nilai
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
                         <!-- Add icons to the links using the .nav-icon class
                              with font-awesome or any other icon font library -->
-                        <li class="nav-item">
-                            <a href="{{ url('/') }}" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('/kelas') }}" class="nav-link">
-                                <i class="nav-icon fas fa-plus-square"></i>
-                                <p>
-                                    Kelas
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('/mapel') }}" class="nav-link">
-                                <i class="nav-icon fas fa-book-reader"></i>
-                                <p>
-                                    Mata Pelajaran
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('/siswa') }}" class="nav-link">
-                                <i class="nav-icon fas fa-user"></i>
-                                <p>
-                                    Siswa
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('/guru') }}" class="nav-link">
-                                <i class="nav-icon fas fa-chess-king"></i>
-                                <p>
-                                    Guru
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('/nilai') }}" class="nav-link">
-                                <i class="nav-icon fas fa-book-open"></i>
-                                <p>
-                                    Nilai
-                                </p>
-                            </a>
-                        </li>
+                        @if (Auth::user()->role == 'Guru' || Auth::user()->role == 'Siswa')
+                            <li class="nav-item">
+                                <a href="{{ url('/nilai') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-book-open"></i>
+                                    <p>
+                                        Nilai
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -202,7 +214,7 @@
                 <!-- Default box -->
                 <div class="card">
                     <div class="card-body">
-                        {{-- @include('pesan.pesan') --}}
+                        @include('pesan.index')
                         @yield('content')
                     </div>
                     <!-- /.card-body -->

@@ -23,7 +23,7 @@ class KelasController extends Controller
      */
     public function create()
     {
-        //
+        return view('kelas.create');
     }
 
     /**
@@ -56,7 +56,7 @@ class KelasController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('kelas.edit');
     }
 
     /**
