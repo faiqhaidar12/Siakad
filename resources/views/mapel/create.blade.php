@@ -9,18 +9,23 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form>
+            <form action="/mapel" method="POST">
+                @csrf
                 <div class="card-body">
                     <div class="form-group">
                         <label for="nama_mapel">Nama Mata Pelajaran</label>
                         <input type="text" class="form-control" name="nama_mapel" id="nama_mapel"
-                            placeholder="Masukan Nama Mata Pelajaran" required>
+                            placeholder="Masukan Nama Mata Pelajaran" value="{{ Session::get('nama_mapel') }}" required>
                     </div>
                     <div class="form-group">
                         <label for="nama_guru">Nama Guru Pengajar</label>
-                        <select class="form-control" name="nama_guru" id="nama_guru">
+                        <select class="form-control" name="guru_id" id="nama_guru">
                             <option value="">---Pilih Guru---</option>
-                            <option value="">Adi Hidayat</option>
+                            @foreach ($dataGuru as $item)
+                                <option value="{{ $item->id }}" @if (Session::get('guru_id') == $item->id) selected @endif>
+                                    {{ $item->nama_guru }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                 </div>

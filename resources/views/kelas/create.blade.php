@@ -9,12 +9,13 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form>
+            <form method="POST" action="/kelas">
+                @csrf
                 <div class="card-body">
                     <div class="form-group">
                         <label for="nama_kelas">Nama Kelas</label>
                         <input type="text" class="form-control" name="nama_kelas" id="nama_kelas"
-                            placeholder="Masukan Nama kelas" required>
+                            placeholder="Masukan Nama kelas" value="{{ Session::get('nama_kelas') }}" required>
                     </div>
                 </div>
                 <!-- /.card-body -->

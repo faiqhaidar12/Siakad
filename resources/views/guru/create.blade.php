@@ -9,31 +9,35 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form>
+            <form method="POST" action="/guru">
+                @csrf
                 <div class="card-body">
                     <div class="form-group">
                         <label for="nama_guru">Nama Guru</label>
                         <input type="text" class="form-control" name="nama_guru" id="nama_guru"
-                            placeholder="Masukan Nama Guru" required>
+                            placeholder="Masukan Nama Guru" value="{{ Session::get('nama_guru') }}" required>
                     </div>
                     <div class="form-group">
                         <label for="jenis_kelamin">Jenis Kelamin</label>
                         <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
-                            <option value="">Laki-Laki</option>
-                            <option value="">Perempuan</option>
+                            <option selected="selected">--Pilih--</option>
+                            <option value="laki-laki" @if (Session::get('jenis_kelamin') == 'laki-laki') selected @endif>Laki-Laki</option>
+                            <option value="perempuan" @if (Session::get('jenis_kelamin') == 'perempuan') selected @endif>Perempuan</option>
                         </select>
                     </div>
                     <div class="form-group" style="width: 150px">
                         <label for="tgl_lahir">Tanggal Lahir</label>
-                        <input type="date" name="tgl_lahir" id="tgl_lahir" class="form-control" required>
+                        <input type="date" name="tgl_lahir" id="tgl_lahir" class="form-control"
+                            value="{{ Session::get('tgl_lahir') }}" required>
                     </div>
                     <div class="form-group">
                         <label for="alamat">Alamat</label>
-                        <textarea name="alamat" id="alamat" class="form-control" cols="30" rows="10"></textarea>
+                        <textarea name="alamat" id="alamat" class="form-control" cols="30" rows="10">{{ Session::get('alamat') }}</textarea>
                     </div>
                     <div class="form-group">
-                        <label for="no_hp">Nomor Telepon</label>
-                        <input type="number" name="no_hp" id="no_hp" class="form-control" required>
+                        <label for="no_telepon">Nomor Telepon</label>
+                        <input type="number" name="no_telepon" id="no_telepon" class="form-control"
+                            value="{{ Session::get('no_telepon') }}" required>
                     </div>
                 </div>
                 <!-- /.card-body -->

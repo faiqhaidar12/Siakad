@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guru;
+use App\Models\Mapel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class MapelController extends Controller
 {
@@ -11,9 +14,19 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('mapel.index');
+        $keyword = $request->input('keyword');
+        $data = Mapel::where(function ($query) use ($keyword) {
+            $query->where('nama_mapel', 'LIKE', '%' . $keyword . '%')
+                ->orWhereHas('guru', function ($query) use ($keyword) {
+                    $query->where('nama_guru', 'LIKE', '%' . $keyword . '%');
+                });
+        })
+            ->latest()
+            ->orderBy('nama_mapel', 'asc')
+            ->paginate(6);
+        return view('mapel.index')->with('data', $data);
     }
 
     /**
@@ -23,7 +36,8 @@ class MapelController extends Controller
      */
     public function create()
     {
-        return view('mapel.create');
+        $data = Guru::all();
+        return view('mapel.create')->with('dataGuru', $data);
     }
 
     /**
@@ -34,7 +48,26 @@ class MapelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Session::flash('nama_mapel', $request->nama_mapel);
+        Session::flash('guru_id', $request->guru_id);
+
+        $request->validate([
+            'nama_mapel' => 'required|unique:mapel,nama_mapel',
+            'guru_id' => 'required|exists:guru,id'
+        ], [
+            'nama_mapel.required' => 'Mapel Harus diisi!!',
+            'nama_mapel.unique' => 'Mapel Sudah Ada!!',
+            'guru_id.required' => 'Guru Harus Pilih!!',
+            'guru_id.exists' => 'Guru yang dipilih tidak valid!!',
+        ]);
+
+
+        $data = [
+            'nama_mapel' => $request->input('nama_mapel'),
+            'guru_id' => $request->input('guru_id'),
+        ];
+        Mapel::create($data);
+        return redirect('mapel')->with('success', 'Mata Pelajaran Berhasil ditambahkan!!');
     }
 
     /**
@@ -56,7 +89,9 @@ class MapelController extends Controller
      */
     public function edit($id)
     {
-        return view('mapel.edit');
+        $guruList = Guru::all();
+        $data = Mapel::where('id', $id)->first();
+        return view('mapel.edit')->with('data', $data)->with('guruList', $guruList);
     }
 
     /**
@@ -68,7 +103,23 @@ class MapelController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama_mapel' => 'required|unique:mapel,nama_mapel,' . $id, ',id',
+            'guru_id' => 'required|exists:guru,id'
+        ], [
+            'nama_mapel.required' => 'Mapel Harus diisi!!',
+            'nama_mapel.unique' => 'Mapel Sudah Ada!!',
+            'guru_id.required' => 'Guru Harus Pilih!!',
+            'guru_id.exists' => 'Guru yang dipilih tidak valid!!',
+        ]);
+
+        $data = [
+            'nama_mapel' => $request->input('nama_mapel'),
+            'guru_id' => $request->input('guru_id'),
+        ];
+
+        Mapel::where('id', $id)->update($data);
+        return redirect('/mapel')->with('success', 'Anda Berhasil Edit Mapel');
     }
 
     /**
@@ -79,6 +130,7 @@ class MapelController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Mapel::where('id', $id)->delete();
+        return redirect('/mapel')->with('success', 'Anda Berhasil Menghapus Mapel!!');
     }
 }

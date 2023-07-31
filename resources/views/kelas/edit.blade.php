@@ -9,17 +9,19 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form>
+            <form method="POST" action="{{ '/kelas/' . $data->id }}">
+                @csrf
+                @method('PUT')
                 <div class="card-body">
                     <div class="form-group">
                         <label for="nama_kelas">Nama kelas</label>
                         <input type="text" class="form-control" name="nama_kelas" id="nama_kelas"
-                            placeholder="Masukan Nama Kelas" required>
+                            placeholder="Masukan Nama Kelas" value="{{ $data->nama_kelas }}" required>
                     </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>
         </div>
