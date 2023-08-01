@@ -22,6 +22,7 @@
                         <label for="jenis_kelamin">Jenis Kelamin</label>
                         <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
                             <option value="{{ $data->jenis_kelamin }}" selected="selected">{{ $data->jenis_kelamin }}
+                            </option>
                             <option value="laki-laki">Laki-Laki</option>
                             <option value="perempuan">Perempuan</option>
                         </select>

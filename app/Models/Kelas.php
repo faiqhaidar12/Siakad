@@ -11,4 +11,9 @@ class Kelas extends Model
 
     protected $table = "kelas";
     protected $fillable = ['nama_kelas'];
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'kelas_id');
+    }
 }

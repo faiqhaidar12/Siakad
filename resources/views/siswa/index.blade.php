@@ -48,10 +48,16 @@
                                 <td>{{ $item->alamat }}</td>
                                 <td>{{ $item->kelas->nama_kelas }}</td>
                                 <td>{{ $item->no_telepon_orang_tua }}</td>
-                                <td><a href="" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt">
+                                <td><a href="{{ '/siswa/' . $item->id . '/edit' }}" class="btn btn-warning btn-sm"><i
+                                            class="fas fa-pencil-alt">
                                         </i> Edit</a>
-                                    <a href="" class="btn btn-danger btn-sm"><i class="fas fa-trash">
-                                        </i> Delete</a>
+                                    <form onsubmit="return confirm('Apakah Anda Yakin Ingin Hapus Siswa?')"
+                                        action="{{ '/siswa/' . $item->id }}" class="d-inline" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash">
+                                            </i> Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -60,5 +66,6 @@
             </div>
             <!-- /.card-body -->
         </div>
+        {{ $data->links() }}
     </div>
 @endsection

@@ -37,18 +37,20 @@
                     </thead>
                     <tbody class="text-center">
                         <?php $no = 1; ?>
-                        <tr>
-                            <td>{{ $no++ }}</td>
-                            <td>Ani Handayani</td>
-                            <td>Bahasa Indonesia</td>
-                            <td>1 A</td>
-                            <td>10</td>
-                            <td><a href="" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt">
-                                    </i> Edit</a>
-                                <a href="" class="btn btn-danger btn-sm"><i class="fas fa-trash">
-                                    </i> Delete</a>
-                            </td>
-                        </tr>
+                        @foreach ($data as $item)
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $item->siswa->nama_siswa }}</td>
+                                <td>{{ $item->mapel->nama_mapel }}</td>
+                                <td>{{ $item->kelas->nama_kelas }}</td>
+                                <td>{{ $item->nilai }}</td>
+                                <td><a href="" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt">
+                                        </i> Edit</a>
+                                    <a href="" class="btn btn-danger btn-sm"><i class="fas fa-trash">
+                                        </i> Delete</a>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

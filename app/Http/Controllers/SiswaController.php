@@ -108,7 +108,9 @@ class SiswaController extends Controller
      */
     public function edit($id)
     {
-        return view('siswa.edit');
+        $dataKelas = Kelas::all();
+        $data = Siswa::where('id', $id)->first();
+        return view('siswa.edit')->with('data', $data)->with('dataKelas', $dataKelas);
     }
 
     /**
@@ -120,7 +122,33 @@ class SiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama_siswa' => 'required',
+            'jenis_kelamin' => 'required',
+            'tanggal_lahir' => 'required',
+            'alamat' => 'required',
+            'no_telepon_orang_tua' => 'required',
+            'kelas_id' => 'required',
+        ], [
+            'nama_siswa.required' => 'Nama Siswa Harus diisi!!',
+            'jenis_kelamin.required' => 'Jenis Kelamin Harus dipilih!!',
+            'tanggal_lahir.required' => 'Tanggal Lahir Harus diisi!!',
+            'alamat.required' => 'Alamat Harus diisi!!',
+            'no_telepon_orang_tua.required' => 'No Orang Tua Siswa Harus diisi!!',
+            'kelas_id.required' => 'Kelas Harus dipilih!!',
+        ]);
+
+        $data = [
+            'nama_siswa' => $request->input('nama_siswa'),
+            'jenis_kelamin' => $request->input('jenis_kelamin'),
+            'tanggal_lahir' => $request->input('tanggal_lahir'),
+            'alamat' => $request->input('alamat'),
+            'no_telepon_orang_tua' => $request->input('no_telepon_orang_tua'),
+            'kelas_id' => $request->input('kelas_id'),
+        ];
+
+        Siswa::where('id', $id)->update($data);
+        return redirect('/siswa')->with('success', 'Anda Berhasil Edit Siswa');
     }
 
     /**
@@ -131,6 +159,7 @@ class SiswaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Siswa::where('id', $id)->delete();
+        return redirect('/siswa')->with('success', 'Anda Berhasil Menghapus Guru!!');
     }
 }
