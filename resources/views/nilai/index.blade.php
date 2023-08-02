@@ -4,10 +4,10 @@
     <a href="/nilai/create" class="btn btn-primary mb-2"><i class="fas fa-plus"></i> Tambah Nilai Siswa</a>
     <div class="float-right">
         <div class="card-tools">
-            <form action="" method="GET">
+            <form action="{{ url('/nilai') }}" method="GET">
                 <div class="input-group input-group-sm" style="width: 150px;">
                     <input type="text" name="keyword" class="form-control float-right" placeholder="Search"
-                        value="">
+                        value="{{ request('keyword') }}">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-default">
                             <i class="fas fa-search"></i>
@@ -32,6 +32,7 @@
                             <th>Mata Pelajaran</th>
                             <th>Kelas</th>
                             <th>Nilai</th>
+                            <th>Semester</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -44,10 +45,17 @@
                                 <td>{{ $item->mapel->nama_mapel }}</td>
                                 <td>{{ $item->kelas->nama_kelas }}</td>
                                 <td>{{ $item->nilai }}</td>
-                                <td><a href="" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt">
+                                <td>{{ $item->semester }}</td>
+                                <td><a href="{{ url('/nilai/' . $item->id . '/edit') }}" class="btn btn-warning btn-sm"><i
+                                            class="fas fa-pencil-alt">
                                         </i> Edit</a>
-                                    <a href="" class="btn btn-danger btn-sm"><i class="fas fa-trash">
-                                        </i> Delete</a>
+                                    <form onsubmit="return confirm('Apakah Anda Yakin Ingin Hapus Nilai?')"
+                                        action="{{ url('/nilai/' . $item->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash">
+                                            </i> Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

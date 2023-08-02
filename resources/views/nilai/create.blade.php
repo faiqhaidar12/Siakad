@@ -47,6 +47,13 @@
                         <input type="number" name="nilai" id="nilai" value="{{ Session::get('nilai') }}"
                             class="form-control" required>
                     </div>
+                    <div class="form-group" style="width: 150px">
+                        <label for="semester">Semester</label>
+                        <select class="form-control" name="semester" id="semester">
+                            <option value="Ganjil" @if (Session::get('semester') == 'Ganjil') selected @endif>Ganjil</option>
+                            <option value="Genap" @if (Session::get('semester') == 'Genap') selected @endif>Genap</option>
+                        </select>
+                    </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">

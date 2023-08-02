@@ -14,7 +14,8 @@ class Nilai extends Model
         'siswa_id',
         'mapel_id',
         'kelas_id',
-        'nilai'
+        'nilai',
+        'semester'
     ];
 
     public static function getSiswaByKelas($kelas_id)

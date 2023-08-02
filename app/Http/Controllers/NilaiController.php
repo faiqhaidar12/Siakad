@@ -18,18 +18,21 @@ class NilaiController extends Controller
      */
     public function index(Request $request)
     {
-        // $keyword = $request->input('keyword');
-        // $data = Nilai::where(function ($query) use ($keyword) {
-        //     $query->where('nilai', 'LIKE', '%' . $keyword . '%')
-        //         ->orWhereHas('siswa', function ($query) use ($keyword) {
-        //             $query->where('nama_siswa', 'LIKE', '%' . $keyword . '%');
-        //         });
-        // })
-        //     ->latest()
-        //     ->orderBy('nama_mapel', 'asc')
-        //     ->paginate(6);
-
-        $data = Nilai::all();
+        $keyword = $request->input('keyword');
+        $data = Nilai::where(function ($query) use ($keyword) {
+            $query->where('nilai', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('semester', 'LIKE', '%' . $keyword . '%')
+                ->orWhereHas('siswa', function ($query) use ($keyword) {
+                    $query->where('nama_siswa', 'LIKE', '%' . $keyword . '%');
+                })->orWhereHas('mapel', function ($query) use ($keyword) {
+                    $query->where('nama_mapel', 'LIKE', '%' . $keyword . '%');
+                })->orWhereHas('kelas', function ($query) use ($keyword) {
+                    $query->where('nama_kelas', 'LIKE', '%' . $keyword . '%');
+                });
+        })
+            ->latest()
+            ->orderBy('nilai', 'asc')
+            ->paginate(6);
         return view('nilai.index')->with('data', $data);
     }
 
@@ -73,12 +76,14 @@ class NilaiController extends Controller
         Session::flash('kelas_id', $request->kelas_id);
         Session::flash('mapel_id', $request->mapel_id);
         Session::flash('nilai', $request->nilai);
+        Session::flash('semester', $request->semester);
 
         $request->validate([
             'siswa_id' => 'required|exists:siswa,id',
             'kelas_id' => 'required|exists:kelas,id',
             'mapel_id' => 'required|exists:mapel,id',
             'nilai' => 'required',
+            'semester' => 'required|in:Ganjil,Genap',
         ], [
             'siswa_id.required' => 'Siswa Harus dipilih!!',
             'siswa_id.exists' => 'Siswa yang dipilih tidak valid!!',
@@ -87,12 +92,14 @@ class NilaiController extends Controller
             'mapel_id.required' => 'Mapel Harus dipilih!!',
             'mapel_id.exists' => 'Mapel yang dipilih tidak valid!!',
             'nilai.required' => 'Nilai Harus diisi!!',
+            'semester.required' => 'Semester Harus diisi!!',
         ]);
         $data = [
             'siswa_id' => $request->input('siswa_id'),
             'kelas_id' => $request->input('kelas_id'),
             'mapel_id' => $request->input('mapel_id'),
             'nilai' => $request->input('nilai'),
+            'semester' => $request->input('semester'),
         ];
 
         Nilai::create($data);
@@ -118,7 +125,21 @@ class NilaiController extends Controller
      */
     public function edit($id)
     {
-        return view('nilai.edit');
+        $dataKelas = Kelas::all();
+        $dataMapel = Mapel::all();
+        $selectedKelas = request('nama_kelas');
+        $dataSiswa = [];
+
+        if ($selectedKelas) {
+            $dataSiswa = Nilai::getSiswaByKelas($selectedKelas);
+        }
+
+        $data = Nilai::where('id', $id)->first();
+        return view('nilai.edit')->with('data', $data)
+            ->with('dataKelas', $dataKelas)
+            ->with('dataMapel', $dataMapel)
+            ->with('dataSiswa', $dataSiswa)
+            ->with('selectedKelas', $selectedKelas);
     }
 
     /**
@@ -130,7 +151,32 @@ class NilaiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'siswa_id' => 'required|exists:siswa,id',
+            'kelas_id' => 'required|exists:kelas,id',
+            'mapel_id' => 'required|exists:mapel,id',
+            'nilai' => 'required',
+            'semester' => 'required|in:Ganjil,Genap',
+        ], [
+            'siswa_id.required' => 'Siswa Harus dipilih!!',
+            'siswa_id.exists' => 'Siswa yang dipilih tidak valid!!',
+            'kelas_id.required' => 'Kelas Harus dipilih!!',
+            'kelas_id.exists' => 'Kelas yang dipilih tidak valid!!',
+            'mapel_id.required' => 'Mapel Harus dipilih!!',
+            'mapel_id.exists' => 'Mapel yang dipilih tidak valid!!',
+            'nilai.required' => 'Nilai Harus diisi!!',
+            'semester.required' => 'Semester Harus diisi!!',
+        ]);
+        $data = [
+            'siswa_id' => $request->input('siswa_id'),
+            'kelas_id' => $request->input('kelas_id'),
+            'mapel_id' => $request->input('mapel_id'),
+            'nilai' => $request->input('nilai'),
+            'semester' => $request->input('semester'),
+        ];
+
+        Nilai::where('id', $id)->update($data);
+        return redirect('/nilai')->with('success', 'Anda Berhasil Edit Nilai');
     }
 
     /**
@@ -141,6 +187,8 @@ class NilaiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Nilai::where('id', $id)->delete();
+
+        return redirect('nilai')->with('success', "Berhasil Hapus Nilai!!");
     }
 }

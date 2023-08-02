@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
@@ -43,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('guru', GuruController::class)->middleware('userAkses:Admin');
     Route::resource('mapel', MapelController::class)->middleware('userAkses:Admin');
     Route::resource('nilai', NilaiController::class)->middleware('userAkses:Admin,Guru,Siswa');
-    Route::get('get-siswa-by-kelas/{kelas_id}', [NilaiController::class, 'getSiswaByKelas']);
+    Route::get('get-siswa-by-kelas/{kelas_id}', [NilaiController::class, 'getSiswaByKelas'])->middleware('userAkses:Admin,Guru,Siswa');
+    Route::resource('pengguna', AdminController::class)->middleware('userAkses:Admin');
     Route::get('/sesi/logout', [SesionController::class, 'logout']);
 });
