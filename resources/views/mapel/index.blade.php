@@ -1,7 +1,7 @@
 @extends('layout.app')
 @section('title', 'Data Mata Pelajaran')
 @section('content')
-    <a href="/mapel/create" class="btn btn-primary mb-2"><i class="fas fa-plus"></i> Tambah Mata Pelajaran</a>
+    <a href="/mapel/create" class="btn btn-primary mb-2"><i class="fas fa-plus"></i> Tambah Mapel</a>
     <div class="float-right">
         <div class="card-tools">
             <form action="{{ url('/mapel') }}" method="GET">

@@ -12,9 +12,18 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        $keyword = $request->input('keyword');
+        $users = User::where(function ($query) use ($keyword) {
+            $query->where('name', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('role', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('email', 'LIKE', '%' . $keyword . '%');
+        })
+            ->latest()
+            ->orderBy('name', 'asc')
+            ->paginate(15);
+        // $users = User::all();
         return view('Pengguna.index')->with('users', $users);
     }
 

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -16,23 +17,26 @@ class UserTableSeeders extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-            'role' => 'Admin',
-            'password' => Hash::make('123456')
-        ]);
-        DB::table('users')->insert([
-            'name' => 'guru',
-            'email' => 'guru@gmail.com',
-            'role' => 'Guru',
-            'password' => Hash::make('123456')
-        ]);
-        DB::table('users')->insert([
-            'name' => 'siswa',
-            'email' => 'siswa@gmail.com',
-            'role' => 'Siswa',
-            'password' => Hash::make('123456')
-        ]);
+
+        // Tambahkan 10 user dengan data palsu
+        User::factory()->count(10)->create();
+        // DB::table('users')->insert([
+        //     'name' => 'admin',
+        //     'email' => 'admin@gmail.com',
+        //     'role' => 'Admin',
+        //     'password' => Hash::make('123456')
+        // ]);
+        // DB::table('users')->insert([
+        //     'name' => 'guru',
+        //     'email' => 'guru@gmail.com',
+        //     'role' => 'Guru',
+        //     'password' => Hash::make('123456')
+        // ]);
+        // DB::table('users')->insert([
+        //     'name' => 'siswa',
+        //     'email' => 'siswa@gmail.com',
+        //     'role' => 'Siswa',
+        //     'password' => Hash::make('123456')
+        // ]);
     }
 }

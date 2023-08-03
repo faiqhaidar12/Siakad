@@ -27,6 +27,7 @@
                 <table class="table table-bordered table-striped">
                     <thead class="text-center">
                         <tr>
+                            <th>No</th>
                             <th>Nama</th>
                             <th>Email</th>
                             <th>Role</th>
@@ -36,6 +37,7 @@
                         <?php $no = 1; ?>
                         @foreach ($users as $user)
                             <tr>
+                                <td>{{ $no++ }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td style="width: 30%">
@@ -61,6 +63,6 @@
             </div>
             <!-- /.card-body -->
         </div>
-        {{-- {{ $data->links() }} --}}
+        {{ $users->links() }}
     </div>
 @endsection

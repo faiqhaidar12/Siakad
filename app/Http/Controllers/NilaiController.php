@@ -32,7 +32,7 @@ class NilaiController extends Controller
         })
             ->latest()
             ->orderBy('nilai', 'asc')
-            ->paginate(6);
+            ->paginate(15);
         return view('nilai.index')->with('data', $data);
     }
 

@@ -37,11 +37,12 @@
                         <textarea name="alamat" id="alamat" class="form-control" cols="30" rows="10">{{ $data->alamat }}</textarea>
                     </div>
                     <div class="form-group" style="width: 150px;">
-                        <label for="kelas_id">Pilih Kelas</label>
-                        <select class="form-control" name="kelas_id" id="kelas_id">
-                            <option value="{{ $data->id }}" selected="selected">{{ $data->kelas->nama_kelas }}</option>
+                        <label for="nama_kelas">Pilih Kelas</label>
+                        <select class="form-control" name="kelas_id" id="nama_kelas">
+                            <option value="" selected disabled>-- Pilih Kelas --</option>
                             @foreach ($dataKelas as $item)
-                                <option value="{{ $item->id }}">{{ $item->nama_kelas }}</option>
+                                <option value="{{ $item->id }}" @if ($item->id === $data->kelas_id) selected @endif>
+                                    {{ $item->nama_kelas }}</option>
                             @endforeach
                         </select>
                     </div>

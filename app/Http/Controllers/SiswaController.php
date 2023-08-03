@@ -29,7 +29,7 @@ class SiswaController extends Controller
         })
             ->latest()
             ->orderBy('nama_siswa', 'asc')
-            ->paginate(6);
+            ->paginate(15);
         return view('siswa.index')->with('data', $data);
     }
 
@@ -128,7 +128,7 @@ class SiswaController extends Controller
             'tanggal_lahir' => 'required',
             'alamat' => 'required',
             'no_telepon_orang_tua' => 'required',
-            'kelas_id' => 'required',
+            'kelas_id' => 'required|exists:kelas,id',
         ], [
             'nama_siswa.required' => 'Nama Siswa Harus diisi!!',
             'jenis_kelamin.required' => 'Jenis Kelamin Harus dipilih!!',
@@ -136,6 +136,7 @@ class SiswaController extends Controller
             'alamat.required' => 'Alamat Harus diisi!!',
             'no_telepon_orang_tua.required' => 'No Orang Tua Siswa Harus diisi!!',
             'kelas_id.required' => 'Kelas Harus dipilih!!',
+            'kelas_id.exists' => 'Kelas yang dipilih tidak valid!!',
         ]);
 
         $data = [
