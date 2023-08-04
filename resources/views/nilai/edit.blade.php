@@ -35,9 +35,10 @@
                     <div class="form-group">
                         <label for="mapel">Mata Pelajaran</label>
                         <select class="form-control" name="mapel_id" id="mapel">
-                            <option value="{{ $data->id }}">{{ $data->mapel->nama_mapel }}</option>
+                            <option value="{{ $data->id }}" selected="selected">{{ $data->mapel->nama_mapel }}</option>
                             @foreach ($dataMapel as $item)
-                                <option value="{{ $item->id }}">{{ $item->nama_mapel }}</option>
+                                <option value="{{ $item->id }}" @if ($item->id === $data->mapel_id) selected @endif>
+                                    {{ $item->nama_mapel }}</option>
                             @endforeach
                         </select>
                     </div>
