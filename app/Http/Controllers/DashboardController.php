@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guru;
+use App\Models\Mapel;
+use App\Models\Siswa;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -13,7 +17,15 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard.index');
+        $totalGuru = Guru::count();
+        $totalSiswa = Siswa::count();
+        $totalMapel = Mapel::count();
+        $totalUsers = User::count();
+        return view('dashboard.index')
+            ->with('totalGuru', $totalGuru)
+            ->with('totalSiswa', $totalSiswa)
+            ->with('totalMapel', $totalMapel)
+            ->with('totalUsers', $totalUsers);
     }
 
     /**
